@@ -5,6 +5,7 @@
  * Teaches skip counting and multiplication readiness.
  */
 import { useState, useEffect } from "react";
+import { IconFrog, IconSparkle } from "./components/Icons";
 
 function rand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -170,9 +171,8 @@ export default function SkipCount({ params, onComplete }) {
             top: 4,
             transform: "translateX(-50%)",
             transition: "left 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
-            fontSize: 28,
           }}>
-            {"\u{1F438}"}
+            <IconFrog size={28} />
           </div>
         </div>
       </div>
@@ -185,8 +185,8 @@ export default function SkipCount({ params, onComplete }) {
       )}
 
       {celebrated && (
-        <div style={{ fontSize: 20, fontWeight: 800, color: "#22C55E", marginBottom: 8, animation: "popIn 0.3s ease" }}>
-          {"\u2728"} {trail.length - 1} hops of {round.hop} = {round.target}
+        <div style={{ fontSize: 20, fontWeight: 800, color: "#22C55E", marginBottom: 8, animation: "popIn 0.3s ease", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+          <IconSparkle size={20} /> {trail.length - 1} hops of {round.hop} = {round.target}
         </div>
       )}
 
@@ -204,8 +204,9 @@ export default function SkipCount({ params, onComplete }) {
           border: "none", borderRadius: 14,
           background: "#22C55E", color: "#fff", cursor: "pointer",
           boxShadow: "0 4px 12px rgba(34,197,94,0.3)",
+          display: "flex", alignItems: "center", gap: 6,
         }}>
-          {"\u{1F438}"} +{round.hop}
+          <IconFrog size={28} /> +{round.hop}
         </button>
         <button onClick={handleUndo} disabled={trail.length <= 1 || celebrated} style={{
           padding: "12px 20px", fontSize: 14, fontWeight: 600,

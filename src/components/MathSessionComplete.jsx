@@ -1,6 +1,7 @@
 /**
  * MathSessionComplete — celebration after finishing a session.
  */
+import { IconStar } from "./Icons";
 
 export default function MathSessionComplete({ stats, onContinue, onBack }) {
   const { total, correct, newMastered, strandsWorked } = stats;
@@ -14,10 +15,10 @@ export default function MathSessionComplete({ stats, onContinue, onBack }) {
       background: "#F9FAFB", padding: "24px 20px", gap: 16,
     }}>
       {/* Stars */}
-      <div style={{ display: "flex", gap: 8, fontSize: 40 }}>
+      <div style={{ display: "flex", gap: 8 }}>
         {[1, 2, 3].map(i => (
           <span key={i} style={{ opacity: i <= stars ? 1 : 0.2, transition: "opacity 0.4s ease" }}>
-            {"\u2B50"}
+            <IconStar size={40} filled={i <= stars} />
           </span>
         ))}
       </div>

@@ -5,6 +5,7 @@
  * Leftovers show remainder visually.
  */
 import { useState, useEffect } from "react";
+import { IconCookie, IconSparkle } from "./components/Icons";
 
 function rand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -106,7 +107,7 @@ export default function FairShare({ params, onComplete }) {
       }}>
         {remaining > 0 ? (
           Array.from({ length: remaining }, (_, i) => (
-            <span key={i} style={{ fontSize: 22 }}>{"\u{1F36A}"}</span>
+            <span key={i}><IconCookie size={18} /></span>
           ))
         ) : (
           <span style={{ fontSize: 13, color: "#9CA3AF", fontWeight: 600 }}>
@@ -134,7 +135,7 @@ export default function FairShare({ params, onComplete }) {
               >
                 {count > 0 ? (
                   Array.from({ length: count }, (_, j) => (
-                    <span key={j} style={{ fontSize: 16, animation: "popIn 0.15s ease" }}>{"\u{1F36A}"}</span>
+                    <span key={j} style={{ animation: "popIn 0.15s ease" }}><IconCookie size={18} /></span>
                   ))
                 ) : (
                   <span style={{ fontSize: 11, color: "#D1D5DB" }}>tap</span>
@@ -162,8 +163,8 @@ export default function FairShare({ params, onComplete }) {
       )}
 
       {celebrated && (
-        <div style={{ fontSize: 18, fontWeight: 800, color: "#22C55E", marginBottom: 8, animation: "popIn 0.3s ease" }}>
-          {"\u2728"} {round.total} {"\u00F7"} {round.plates} = {perPlate}{remainder > 0 ? ` remainder ${remainder}` : ""}
+        <div style={{ fontSize: 18, fontWeight: 800, color: "#22C55E", marginBottom: 8, animation: "popIn 0.3s ease", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+          <IconSparkle size={20} /> {round.total} {"\u00F7"} {round.plates} = {perPlate}{remainder > 0 ? ` remainder ${remainder}` : ""}
         </div>
       )}
 

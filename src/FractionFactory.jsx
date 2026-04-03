@@ -5,6 +5,7 @@
  * then taps slices to select them. Visual fraction building.
  */
 import { useState, useEffect } from "react";
+import { IconSlice, IconSparkle } from "./components/Icons";
 
 const COLORS = ["#3B82F6", "#EF4444", "#22C55E", "#F59E0B", "#8B5CF6"];
 
@@ -147,8 +148,8 @@ export default function FractionFactory({ params, onComplete }) {
       )}
 
       {celebrated && (
-        <div style={{ fontSize: 20, fontWeight: 800, color: "#22C55E", marginBottom: 8, animation: "popIn 0.3s ease" }}>
-          {"\u2728"} {round.numer}/{round.denom} — perfect!
+        <div style={{ fontSize: 20, fontWeight: 800, color: "#22C55E", marginBottom: 8, animation: "popIn 0.3s ease", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+          <IconSparkle size={20} /> {round.numer}/{round.denom} — perfect!
         </div>
       )}
 
@@ -163,7 +164,7 @@ export default function FractionFactory({ params, onComplete }) {
               boxShadow: "0 4px 12px rgba(245,158,11,0.3)",
               display: "flex", alignItems: "center", gap: 6,
             }}>
-              {"\u{1F52A}"} Slice ({totalParts} parts)
+              <IconSlice size={20} color="#fff" /> Slice ({totalParts} parts)
             </button>
             {slices > 0 && (
               <button onClick={handleDone} style={{

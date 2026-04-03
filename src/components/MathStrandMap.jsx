@@ -6,6 +6,7 @@
  */
 import { STRANDS } from "../data/mathStrands";
 import { getStrandProgress } from "../data/mathMastery";
+import { IconTarget, IconCheck } from "./Icons";
 
 export default function MathStrandMap({ onStartSession, onStartStrand }) {
   const progress = STRANDS.map(s => ({ ...s, ...getStrandProgress(s) }));
@@ -35,7 +36,7 @@ export default function MathStrandMap({ onStartSession, onStartStrand }) {
         marginBottom: 24,
         display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
       }}>
-        {"\u{1F3AF}"} Start Session
+        <IconTarget size={20} color="#fff" /> Start Session
       </button>
 
       {/* Strand cards */}
@@ -69,7 +70,7 @@ export default function MathStrandMap({ onStartSession, onStartStrand }) {
               <div style={{ fontSize: 11, color: "#9CA3AF", marginTop: 3 }}>
                 {strand.frontierSkill
                   ? `Next: ${strand.frontierSkill.name}`
-                  : "\u2705 All mastered!"}
+                  : <span style={{ display: "inline-flex", alignItems: "center", gap: 4 }}><IconCheck size={14} /> All mastered!</span>}
               </div>
             </div>
             <span style={{ fontSize: 14, fontWeight: 800, color: strand.color }}>

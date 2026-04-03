@@ -4,6 +4,7 @@
  * 5 shapes shown, 4 share a property, 1 is different.
  */
 import { useState } from "react";
+import { IconCheck } from "./components/Icons";
 
 const COLORS = ["#3B82F6", "#EF4444", "#22C55E", "#F59E0B", "#8B5CF6"];
 
@@ -145,7 +146,7 @@ export default function OddOneOut({ params, onComplete }) {
       </div>
 
       {feedback === "correct" && (
-        <div style={{ marginTop: 16, fontSize: 16, fontWeight: 700, color: "#22C55E" }}>{"\u2705"} Correct!</div>
+        <div style={{ marginTop: 16, fontSize: 16, fontWeight: 700, color: "#22C55E", display: "flex", alignItems: "center", gap: 6, justifyContent: "center" }}><IconCheck size={16} /> Correct!</div>
       )}
     </div>
   );

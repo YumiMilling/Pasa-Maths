@@ -5,6 +5,7 @@
  * Patterns: alternating shapes, growing sizes, repeating colors, rotating arrows.
  */
 import { useState } from "react";
+import { IconHint, IconCheck } from "./components/Icons";
 
 const COLORS = { blue: "#3B82F6", red: "#EF4444", green: "#22C55E", yellow: "#F59E0B", purple: "#8B5CF6" };
 
@@ -240,8 +241,9 @@ export default function PatternSequence({ params, onComplete }) {
           padding: "8px 16px", fontSize: 13, fontWeight: 600,
           border: "1px solid #FDE68A", borderRadius: 8,
           background: "#FFFBEB", color: "#92400E", cursor: "pointer",
+          display: "inline-flex", alignItems: "center", gap: 6,
         }}>
-          {"\u{1F4A1}"} Hint
+          <IconHint size={16} /> Hint
         </button>
       )}
       {showHint && !feedback && (
@@ -249,13 +251,14 @@ export default function PatternSequence({ params, onComplete }) {
           padding: "10px 16px", borderRadius: 10,
           background: "#FFFBEB", border: "1px solid #FDE68A",
           fontSize: 14, color: "#92400E", fontWeight: 600,
+          display: "flex", alignItems: "center", gap: 6, justifyContent: "center",
         }}>
-          {"\u{1F4A1}"} {round.hint}
+          <IconHint size={16} /> {round.hint}
         </div>
       )}
 
       {feedback === "correct" && (
-        <div style={{ marginTop: 12, fontSize: 16, fontWeight: 700, color: "#22C55E" }}>{"\u2705"} Correct!</div>
+        <div style={{ marginTop: 12, fontSize: 16, fontWeight: 700, color: "#22C55E", display: "flex", alignItems: "center", gap: 6, justifyContent: "center" }}><IconCheck size={16} /> Correct!</div>
       )}
     </div>
   );

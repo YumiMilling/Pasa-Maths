@@ -13,6 +13,7 @@
  *   Level 9+: 5x5 grid, 5-6 cells, 3-4 colors
  */
 import { useState, useEffect } from "react";
+import { IconEraser, IconHint, IconSparkle } from "./components/Icons";
 
 const ALL_COLORS = ["#3B82F6", "#EF4444", "#22C55E", "#F59E0B"];
 
@@ -167,7 +168,7 @@ export default function MirrorReflection({ params, onComplete }) {
             border: activeColor === null ? "3px solid #111" : "3px solid #E5E7EB",
             cursor: "pointer", fontSize: 16,
             transform: activeColor === null ? "scale(1.15)" : "scale(1)",
-          }}>{"\u{1F9F9}"}</button>
+          }}><IconEraser size={16} /></button>
         </div>
       )}
 
@@ -257,13 +258,14 @@ export default function MirrorReflection({ params, onComplete }) {
             padding: "5px 12px", fontSize: 12, fontWeight: 600,
             border: "1px solid #FDE68A", borderRadius: 6,
             background: "#FFFBEB", color: "#92400E", cursor: "pointer",
-          }}>{"\u{1F4A1}"} Hint</button>
+            display: "inline-flex", alignItems: "center", gap: 4,
+          }}><IconHint size={16} /> Hint</button>
         )}
       </div>
 
       {celebrated && (
-        <div style={{ marginTop: 10, fontSize: 18, fontWeight: 800, color: "#22C55E", animation: "popIn 0.3s ease" }}>
-          {"\u2728"} Perfect!
+        <div style={{ marginTop: 10, fontSize: 18, fontWeight: 800, color: "#22C55E", animation: "popIn 0.3s ease", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+          <IconSparkle size={20} /> Perfect!
         </div>
       )}
 

@@ -10,6 +10,7 @@ import { planSession } from "../data/mathSessionPlanner";
 import { recordResult, getMastery, setPlacement, loadFromSupabase } from "../data/mathMastery";
 import { generatePlacement, processPlacement } from "../data/mathPlacement";
 import { generateActivity } from "../data/mathSkillGenerator";
+import { IconTrophy, IconFire, IconCheck, IconBack, IconTarget } from "./Icons";
 import MathStrandMap from "./MathStrandMap";
 import MathSessionComplete from "./MathSessionComplete";
 
@@ -141,13 +142,13 @@ export default function PasaMaths({ onExit }) {
 
     // Show progress toast
     if (result.justMastered) {
-      setToast({ text: `\u2B50 "${item.skill.name}" mastered!`, color: "#22C55E", icon: "\u{1F3C6}" });
+      setToast({ text: `"${item.skill.name}" mastered!`, color: "#22C55E", iconEl: <IconTrophy size={18} color="#22C55E" /> });
     } else if (correct && result.streak >= 2) {
-      setToast({ text: `${item.skill.name} — ${result.streak}/3 to master`, color: "#3B82F6", icon: "\u{1F525}" });
+      setToast({ text: `${item.skill.name} — ${result.streak}/3 to master`, color: "#3B82F6", iconEl: <IconFire size={18} /> });
     } else if (correct && result.streak === 1) {
-      setToast({ text: `${item.skill.name} — 1/3 to master`, color: "#6B7280", icon: "\u2705" });
+      setToast({ text: `${item.skill.name} — 1/3 to master`, color: "#6B7280", iconEl: <IconCheck size={18} /> });
     } else if (!correct) {
-      setToast({ text: `Keep going — you'll get it`, color: "#9CA3AF", icon: "\u{1F4AA}" });
+      setToast({ text: `Keep going — you'll get it`, color: "#9CA3AF" });
     }
 
     // Advance after brief pause
@@ -239,7 +240,7 @@ export default function PasaMaths({ onExit }) {
         }}>
           <button onClick={() => setScreen("map")} style={{
             border: "none", background: "none", fontSize: 20, color: "#9CA3AF", cursor: "pointer", padding: "4px 8px",
-          }}>{"\u2190"}</button>
+          }}><IconBack size={20} color="#9CA3AF" /></button>
           <div style={{ textAlign: "center" }}>
             <div style={{ fontSize: 12, color: "#9CA3AF" }}>{item.skill.name}</div>
           </div>
@@ -264,8 +265,8 @@ export default function PasaMaths({ onExit }) {
             background: `${toast.color}15`, borderBottom: `1px solid ${toast.color}30`,
             animation: "fadeIn 0.3s ease",
           }}>
-            <span style={{ fontSize: 14, fontWeight: 700, color: toast.color }}>
-              {toast.icon} {toast.text}
+            <span style={{ fontSize: 14, fontWeight: 700, color: toast.color, display: "inline-flex", alignItems: "center", gap: 6 }}>
+              {toast.iconEl} {toast.text}
             </span>
           </div>
         )}

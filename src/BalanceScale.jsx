@@ -12,6 +12,7 @@
  * Numbers mode: pick 2 cards that sum to target.
  */
 import { useState, useEffect } from "react";
+import { IconApple, IconSparkle } from "./components/Icons";
 
 function rand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -203,7 +204,7 @@ export default function BalanceScale({ params, onComplete }) {
           }}>
             {round.type === "concrete" ? (
               Array.from({ length: round.target }, (_, i) => (
-                <span key={i} style={{ fontSize: 18 }}>{"\u{1F34E}"}</span>
+                <span key={i}><IconApple size={20} /></span>
               ))
             ) : (
               <span style={{ fontSize: 30, fontWeight: 800, color: "#1D4ED8" }}>{round.target}</span>
@@ -236,7 +237,7 @@ export default function BalanceScale({ params, onComplete }) {
               rightItems.length === 0
                 ? <span style={{ fontSize: 13, color: "#D1D5DB" }}>tap +</span>
                 : rightItems.map((_, i) => (
-                  <span key={i} style={{ fontSize: 18, animation: "popIn 0.2s ease" }}>{"\u{1F34E}"}</span>
+                  <span key={i} style={{ animation: "popIn 0.2s ease" }}><IconApple size={20} /></span>
                 ))
             ) : (
               rightItems.length === 0
@@ -270,9 +271,9 @@ export default function BalanceScale({ params, onComplete }) {
         {balanced && (
           <div style={{
             position: "absolute", top: BEAM_Y - 30, left: BEAM_CX - 20,
-            fontSize: 36, animation: "popIn 0.4s ease", zIndex: 10,
+            animation: "popIn 0.4s ease", zIndex: 10,
           }}>
-            {"\u2728"}
+            <IconSparkle size={36} />
           </div>
         )}
       </div>
@@ -292,7 +293,7 @@ export default function BalanceScale({ params, onComplete }) {
             border: "none", background: "#22C55E", color: "#fff",
             cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 4,
             boxShadow: "0 4px 12px rgba(34,197,94,0.3)",
-          }}>{"\u{1F34E}"} +</button>
+          }}><IconApple size={20} /> +</button>
         </div>
       )}
 

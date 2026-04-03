@@ -1,5 +1,6 @@
 import { useState } from "react";
 import DevSkillMap from "./DevSkillMap";
+import DevIcons from "./DevIcons";
 import PasaMaths from "./components/PasaMaths";
 import TensFrame from "./TensFrame";
 import NumberLine from "./NumberLine";
@@ -20,6 +21,7 @@ import OddOneOut from "./OddOneOut";
 const DEMOS = [
   { id: "course", label: "Full Course", emoji: "\u{1F393}", cat: "dev" },
   { id: "skillmap", label: "Skill Map", emoji: "\u{1F5FA}\uFE0F", cat: "dev" },
+  { id: "icons", label: "Icons", emoji: "\u{1F3A8}", cat: "dev" },
   { id: "tens", label: "Tens Frame", emoji: "\u{1F7E2}", cat: "number" },
   { id: "numline", label: "Number Line", emoji: "\u{1F4CF}", cat: "number" },
   { id: "coins", label: "Place Value", emoji: "\u{1FA99}", cat: "number" },
@@ -82,6 +84,7 @@ export default function App() {
       <div style={{ padding: "8px 20px 40px", maxWidth: 480, margin: "0 auto" }}>
         {demo === "course" && <PasaMaths onExit={() => setDemo("skillmap")} />}
         {demo === "skillmap" && <DevSkillMap />}
+        {demo === "icons" && <DevIcons />}
         {demo === "tens" && <TensFrame />}
         {demo === "numline" && <NumberLine />}
         {demo === "coins" && <CoinMaker />}

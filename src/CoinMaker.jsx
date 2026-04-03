@@ -5,6 +5,7 @@
  * 10 ten-bars fuse into a hundred-block. Build the target number.
  */
 import { useState, useEffect } from "react";
+import { IconSparkle } from "./components/Icons";
 
 function rand(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -167,14 +168,15 @@ export default function CoinMaker({ params, onComplete }) {
         <div style={{
           fontSize: 14, fontWeight: 700, color: "#F59E0B", marginBottom: 8,
           animation: "popIn 0.3s ease",
+          display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
         }}>
-          {fusionFlash === "tens" ? "\u2728 10 ones made a ten!" : "\u2728 10 tens made a hundred!"}
+          <IconSparkle size={18} /> {fusionFlash === "tens" ? "10 ones made a ten!" : "10 tens made a hundred!"}
         </div>
       )}
 
       {celebrated && (
-        <div style={{ fontSize: 20, fontWeight: 800, color: "#22C55E", marginBottom: 8, animation: "popIn 0.3s ease" }}>
-          {"\u2728"} {target} = {hundreds > 0 ? `${hundreds} hundreds ` : ""}{tens > 0 ? `${tens} tens ` : ""}{ones > 0 ? `${ones} ones` : ""}
+        <div style={{ fontSize: 20, fontWeight: 800, color: "#22C55E", marginBottom: 8, animation: "popIn 0.3s ease", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+          <IconSparkle size={18} /> {target} = {hundreds > 0 ? `${hundreds} hundreds ` : ""}{tens > 0 ? `${tens} tens ` : ""}{ones > 0 ? `${ones} ones` : ""}
         </div>
       )}
 
