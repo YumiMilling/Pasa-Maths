@@ -19,9 +19,17 @@ function generateRound(level) {
   return { hop, target, max, steps };
 }
 
-export default function SkipCount() {
+export default function SkipCount({ params, onComplete }) {
   const [level, setLevel] = useState(1);
-  const [round, setRound] = useState(() => generateRound(1));
+  const [round, setRound] = useState(() => {
+    if (params) {
+      const hop = params.hop ?? 2;
+      const target = params.target ?? hop * 3;
+      const max = params.max ?? Math.max(target + hop * 2, 30);
+      return { hop, target, max, steps: target / hop };
+    }
+    return generateRound(1);
+  });
   const [pos, setPos] = useState(0);
   const [trail, setTrail] = useState([0]);
   const [celebrated, setCelebrated] = useState(false);
@@ -32,15 +40,19 @@ export default function SkipCount() {
   useEffect(() => {
     if (atTarget && !celebrated) {
       setCelebrated(true);
-      setTimeout(() => {
-        const next = level + 1;
-        setLevel(next);
-        setRound(generateRound(next));
-        setPos(0);
-        setTrail([0]);
-        setCelebrated(false);
-        setOvershot(false);
-      }, 1800);
+      if (onComplete) {
+        setTimeout(() => onComplete({ correct: true, answer: round.target }), 1200);
+      } else {
+        setTimeout(() => {
+          const next = level + 1;
+          setLevel(next);
+          setRound(generateRound(next));
+          setPos(0);
+          setTrail([0]);
+          setCelebrated(false);
+          setOvershot(false);
+        }, 1800);
+      }
     }
   }, [atTarget, celebrated, level]);
 

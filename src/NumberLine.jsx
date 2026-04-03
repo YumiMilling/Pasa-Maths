@@ -9,9 +9,9 @@ function randomTarget(max) {
   return Math.floor(Math.random() * (max - 1)) + 1;
 }
 
-export default function NumberLine() {
-  const [max] = useState(10);
-  const [target, setTarget] = useState(() => randomTarget(10));
+export default function NumberLine({ params, onComplete }) {
+  const [max] = useState(params?.max || 10);
+  const [target, setTarget] = useState(() => params?.target || randomTarget(params?.max || 10));
   const [placed, setPlaced] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const lineRef = useRef(null);
@@ -35,17 +35,17 @@ export default function NumberLine() {
 
   const handleCheck = () => {
     if (placed === null) return;
-    if (placed === target) {
-      setFeedback("correct");
-      setTimeout(() => {
+    const correct = placed === target;
+    setFeedback(correct ? "correct" : "wrong");
+    setTimeout(() => {
+      if (onComplete) {
+        onComplete({ correct, answer: placed });
+      } else {
         setFeedback(null);
         setPlaced(null);
-        setTarget(randomTarget(max));
-      }, 1500);
-    } else {
-      setFeedback("wrong");
-      setTimeout(() => setFeedback(null), 1200);
-    }
+        if (correct) setTarget(randomTarget(max));
+      }
+    }, correct ? 1200 : 1000);
   };
 
   return (

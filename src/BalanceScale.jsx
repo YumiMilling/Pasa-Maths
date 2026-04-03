@@ -49,7 +49,7 @@ const BASE_W = 80;
 const BASE_H = 8;
 const TOTAL_H = BEAM_Y + BEAM_H + STRING_LEN + PAN_H + 24;
 
-export default function BalanceScale() {
+export default function BalanceScale({ params, onComplete }) {
   const [level, setLevel] = useState(1);
   const [round, setRound] = useState(() => generateRound(1));
   const [rightItems, setRightItems] = useState([]);
@@ -75,14 +75,18 @@ export default function BalanceScale() {
   useEffect(() => {
     if (balanced && !celebrated) {
       setCelebrated(true);
-      setTimeout(() => {
-        const next = level + 1;
-        setLevel(next);
-        setRound(generateRound(next));
-        setRightItems([]);
-        setUsedCards(new Set());
-        setCelebrated(false);
-      }, 2000);
+      if (onComplete) {
+        setTimeout(() => onComplete({ correct: true, answer: rightTotal }), 1200);
+      } else {
+        setTimeout(() => {
+          const next = level + 1;
+          setLevel(next);
+          setRound(generateRound(next));
+          setRightItems([]);
+          setUsedCards(new Set());
+          setCelebrated(false);
+        }, 2000);
+      }
     }
   }, [balanced, celebrated, level]);
 

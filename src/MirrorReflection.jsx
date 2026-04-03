@@ -43,7 +43,7 @@ function generateRound() {
   return { original, answer, palette: usedColors };
 }
 
-export default function MirrorReflection() {
+export default function MirrorReflection({ params, onComplete }) {
   const [round, setRound] = useState(() => generateRound());
   const [placed, setPlaced] = useState({});
   const [activeColor, setActiveColor] = useState(null);
@@ -68,12 +68,16 @@ export default function MirrorReflection() {
 
     if (allCorrect && noExtra && Object.keys(placed).length === answerKeys.length) {
       setCelebrated(true);
-      setTimeout(() => {
-        setRound(generateRound());
-        setPlaced({});
-        setCelebrated(false);
-        setShowHint(false);
-      }, 1800);
+      if (onComplete) {
+        setTimeout(() => onComplete({ correct: true }), 1200);
+      } else {
+        setTimeout(() => {
+          setRound(generateRound());
+          setPlaced({});
+          setCelebrated(false);
+          setShowHint(false);
+        }, 1800);
+      }
     }
   }, [placed, round.answer, celebrated]);
 

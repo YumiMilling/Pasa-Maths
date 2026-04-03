@@ -76,7 +76,7 @@ function shuffle(arr) {
   return a;
 }
 
-export default function ShapeExplorer() {
+export default function ShapeExplorer({ params, onComplete }) {
   const [level, setLevel] = useState(1);
   const [round, setRound] = useState(() => generateRound(1));
   const [selected, setSelected] = useState(null);
@@ -87,15 +87,19 @@ export default function ShapeExplorer() {
     setSelected(i);
     const correct = opt === round.answer;
     setFeedback(correct ? "correct" : "wrong");
-    setTimeout(() => {
-      if (correct) {
-        const next = level + 1;
-        setLevel(next);
-        setRound(generateRound(next));
-      }
-      setSelected(null);
-      setFeedback(null);
-    }, correct ? 1200 : 800);
+    if (onComplete) {
+      setTimeout(() => onComplete({ correct, answer: opt }), correct ? 1200 : 800);
+    } else {
+      setTimeout(() => {
+        if (correct) {
+          const next = level + 1;
+          setLevel(next);
+          setRound(generateRound(next));
+        }
+        setSelected(null);
+        setFeedback(null);
+      }, correct ? 1200 : 800);
+    }
   };
 
   const svgSize = 100;

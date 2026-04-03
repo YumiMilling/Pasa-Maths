@@ -1,4 +1,6 @@
 import { useState } from "react";
+import DevSkillMap from "./DevSkillMap";
+import PasaMaths from "./components/PasaMaths";
 import TensFrame from "./TensFrame";
 import NumberLine from "./NumberLine";
 import BalanceScale from "./BalanceScale";
@@ -16,6 +18,8 @@ import MirrorReflection from "./MirrorReflection";
 import OddOneOut from "./OddOneOut";
 
 const DEMOS = [
+  { id: "course", label: "Full Course", emoji: "\u{1F393}", cat: "dev" },
+  { id: "skillmap", label: "Skill Map", emoji: "\u{1F5FA}\uFE0F", cat: "dev" },
   { id: "tens", label: "Tens Frame", emoji: "\u{1F7E2}", cat: "number" },
   { id: "numline", label: "Number Line", emoji: "\u{1F4CF}", cat: "number" },
   { id: "coins", label: "Place Value", emoji: "\u{1FA99}", cat: "number" },
@@ -34,6 +38,7 @@ const DEMOS = [
 ];
 
 const CATS = [
+  { id: "dev", label: "Dev Tools", color: "#6B7280" },
   { id: "number", label: "Number Sense", color: "#22C55E" },
   { id: "operations", label: "Operations", color: "#3B82F6" },
   { id: "geometry", label: "Shape, Space & Measure", color: "#F59E0B" },
@@ -75,6 +80,8 @@ export default function App() {
       ))}
 
       <div style={{ padding: "8px 20px 40px", maxWidth: 480, margin: "0 auto" }}>
+        {demo === "course" && <PasaMaths onExit={() => setDemo("skillmap")} />}
+        {demo === "skillmap" && <DevSkillMap />}
         {demo === "tens" && <TensFrame />}
         {demo === "numline" && <NumberLine />}
         {demo === "coins" && <CoinMaker />}

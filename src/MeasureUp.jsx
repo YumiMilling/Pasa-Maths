@@ -80,7 +80,7 @@ function Bar({ length, color, label }) {
   );
 }
 
-export default function MeasureUp() {
+export default function MeasureUp({ params, onComplete }) {
   const [level, setLevel] = useState(1);
   const [round, setRound] = useState(() => generateRound(1));
   const [selected, setSelected] = useState(null);
@@ -101,10 +101,14 @@ export default function MeasureUp() {
     setSelected(choice);
     const correct = choice === round.answer;
     setFeedback(correct ? "correct" : "wrong");
-    setTimeout(() => {
-      if (correct) advance();
-      else { setSelected(null); setFeedback(null); }
-    }, correct ? 1200 : 800);
+    if (onComplete) {
+      setTimeout(() => onComplete({ correct, answer: choice }), correct ? 1200 : 800);
+    } else {
+      setTimeout(() => {
+        if (correct) advance();
+        else { setSelected(null); setFeedback(null); }
+      }, correct ? 1200 : 800);
+    }
   };
 
   const handleMeasure = (e) => {
@@ -112,10 +116,14 @@ export default function MeasureUp() {
     if (feedback || !input) return;
     const correct = parseInt(input) === round.answer;
     setFeedback(correct ? "correct" : "wrong");
-    setTimeout(() => {
-      if (correct) advance();
-      else setFeedback(null);
-    }, correct ? 1200 : 800);
+    if (onComplete) {
+      setTimeout(() => onComplete({ correct, answer: parseInt(input) }), correct ? 1200 : 800);
+    } else {
+      setTimeout(() => {
+        if (correct) advance();
+        else setFeedback(null);
+      }, correct ? 1200 : 800);
+    }
   };
 
   return (

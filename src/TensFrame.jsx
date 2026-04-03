@@ -6,12 +6,13 @@
  */
 import { useState, useRef, useCallback } from "react";
 
-function randomTarget() {
-  return Math.floor(Math.random() * 10) + 1;
+function randomTarget(max = 10) {
+  return Math.floor(Math.random() * max) + 1;
 }
 
-export default function TensFrame() {
-  const [target, setTarget] = useState(() => randomTarget());
+export default function TensFrame({ params, onComplete }) {
+  const max = params?.max || 10;
+  const [target, setTarget] = useState(() => params?.target || randomTarget(max));
   const [cells, setCells] = useState(Array(10).fill(false));
   const [feedback, setFeedback] = useState(null);
   const [dragging, setDragging] = useState(false);
@@ -75,13 +76,23 @@ export default function TensFrame() {
     if (filled === target) {
       setFeedback("correct");
       setTimeout(() => {
-        setFeedback(null);
-        setTarget(randomTarget());
-        setCells(Array(10).fill(false));
-      }, 1500);
+        if (onComplete) {
+          onComplete({ correct: true, answer: filled });
+        } else {
+          setFeedback(null);
+          setTarget(randomTarget(max));
+          setCells(Array(10).fill(false));
+        }
+      }, 1200);
     } else {
       setFeedback("wrong");
-      setTimeout(() => setFeedback(null), 1200);
+      setTimeout(() => {
+        if (onComplete) {
+          onComplete({ correct: false, answer: filled });
+        } else {
+          setFeedback(null);
+        }
+      }, 1000);
     }
   };
 

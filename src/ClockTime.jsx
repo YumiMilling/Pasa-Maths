@@ -109,9 +109,16 @@ function ClockFace({ hour, minute, size = 160 }) {
   );
 }
 
-export default function ClockTime() {
+export default function ClockTime({ params, onComplete }) {
   const [level, setLevel] = useState(1);
-  const [round, setRound] = useState(() => generateRound(1));
+  const [round, setRound] = useState(() => {
+    if (params && params.hour != null) {
+      const h = params.hour;
+      const m = params.minute ?? 0;
+      return { hour: h, minute: m, display: `${h}:${String(m).padStart(2, "0")}` };
+    }
+    return generateRound(1);
+  });
   const [options] = useState(() => shuffle([round.display, ...wrongTimes(round, 3)]));
   const [selected, setSelected] = useState(null);
   const [feedback, setFeedback] = useState(null);
@@ -132,10 +139,14 @@ export default function ClockTime() {
     setSelected(i);
     const correct = opt === round.display;
     setFeedback(correct ? "correct" : "wrong");
-    setTimeout(() => {
-      if (correct) newRound();
-      else { setSelected(null); setFeedback(null); }
-    }, correct ? 1200 : 800);
+    if (onComplete) {
+      setTimeout(() => onComplete({ correct, answer: opt }), correct ? 1200 : 800);
+    } else {
+      setTimeout(() => {
+        if (correct) newRound();
+        else { setSelected(null); setFeedback(null); }
+      }, correct ? 1200 : 800);
+    }
   };
 
   return (

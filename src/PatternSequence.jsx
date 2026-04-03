@@ -164,7 +164,7 @@ function itemKey(item) {
   return `${item.type}_${item.color}_${item.size || 0}_${item.rotation || 0}_${item.count || 0}`;
 }
 
-export default function PatternSequence() {
+export default function PatternSequence({ params, onComplete }) {
   const [round, setRound] = useState(() => GENERATORS[Math.floor(Math.random() * GENERATORS.length)]());
   const [selected, setSelected] = useState(null);
   const [feedback, setFeedback] = useState(null);
@@ -175,14 +175,18 @@ export default function PatternSequence() {
     setSelected(i);
     const correct = itemKey(opt) === itemKey(round.answer);
     setFeedback(correct ? "correct" : "wrong");
-    setTimeout(() => {
-      if (correct) {
-        setRound(GENERATORS[Math.floor(Math.random() * GENERATORS.length)]());
-        setShowHint(false);
-      }
-      setSelected(null);
-      setFeedback(null);
-    }, correct ? 1200 : 800);
+    if (onComplete) {
+      setTimeout(() => onComplete({ correct, answer: itemKey(opt) }), correct ? 1200 : 800);
+    } else {
+      setTimeout(() => {
+        if (correct) {
+          setRound(GENERATORS[Math.floor(Math.random() * GENERATORS.length)]());
+          setShowHint(false);
+        }
+        setSelected(null);
+        setFeedback(null);
+      }, correct ? 1200 : 800);
+    }
   };
 
   return (

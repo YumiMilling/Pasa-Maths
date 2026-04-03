@@ -75,7 +75,7 @@ function generateRound(level) {
   };
 }
 
-export default function AreaPerimeter() {
+export default function AreaPerimeter({ params, onComplete }) {
   const [level, setLevel] = useState(1);
   const [round, setRound] = useState(() => generateRound(1));
   const [input, setInput] = useState("");
@@ -86,15 +86,19 @@ export default function AreaPerimeter() {
     if (feedback || !input) return;
     const correct = parseInt(input) === round.answer;
     setFeedback(correct ? "correct" : "wrong");
-    setTimeout(() => {
-      if (correct) {
-        const next = level + 1;
-        setLevel(next);
-        setRound(generateRound(next));
-        setInput("");
-      }
-      setFeedback(null);
-    }, correct ? 1200 : 800);
+    if (onComplete) {
+      setTimeout(() => onComplete({ correct, answer: parseInt(input) }), correct ? 1200 : 800);
+    } else {
+      setTimeout(() => {
+        if (correct) {
+          const next = level + 1;
+          setLevel(next);
+          setRound(generateRound(next));
+          setInput("");
+        }
+        setFeedback(null);
+      }, correct ? 1200 : 800);
+    }
   };
 
   const CELL = 40;

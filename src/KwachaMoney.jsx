@@ -53,7 +53,7 @@ function shuffle(arr) {
   return [...arr].sort(() => Math.random() - 0.5);
 }
 
-export default function KwachaMoney() {
+export default function KwachaMoney({ params, onComplete }) {
   const [level, setLevel] = useState(1);
   const [round, setRound] = useState(() => generateRound(1));
   const [answer, setAnswer] = useState("");
@@ -76,10 +76,14 @@ export default function KwachaMoney() {
     const parsed = parseFloat(answer);
     const correct = Math.abs(parsed - round.total) < 0.01;
     setFeedback(correct ? "correct" : "wrong");
-    setTimeout(() => {
-      if (correct) advance();
-      else setFeedback(null);
-    }, correct ? 1200 : 800);
+    if (onComplete) {
+      setTimeout(() => onComplete({ correct, answer: parsed }), correct ? 1200 : 800);
+    } else {
+      setTimeout(() => {
+        if (correct) advance();
+        else setFeedback(null);
+      }, correct ? 1200 : 800);
+    }
   };
 
   // Make mode
@@ -101,7 +105,11 @@ export default function KwachaMoney() {
   useEffect(() => {
     if (makeCorrect && !feedback) {
       setFeedback("correct");
-      setTimeout(advance, 1500);
+      if (onComplete) {
+        setTimeout(() => onComplete({ correct: true, answer: selectedTotal }), 1200);
+      } else {
+        setTimeout(advance, 1500);
+      }
     }
   }, [makeCorrect]);
 

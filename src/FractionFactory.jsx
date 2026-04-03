@@ -22,9 +22,14 @@ function generateRound(difficulty, prev) {
   return { numer, denom, color };
 }
 
-export default function FractionFactory() {
+export default function FractionFactory({ params, onComplete }) {
   const [level, setLevel] = useState(1);
-  const [round, setRound] = useState(() => generateRound(1));
+  const [round, setRound] = useState(() => {
+    if (params && params.numer != null && params.denom != null) {
+      return { numer: params.numer, denom: params.denom, color: params.color || COLORS[Math.floor(Math.random() * COLORS.length)] };
+    }
+    return generateRound(1);
+  });
   const [slices, setSlices] = useState(0); // how many cuts (0 = whole bar)
   const [selected, setSelected] = useState(new Set());
   const [phase, setPhase] = useState("slice"); // slice | pick
@@ -37,15 +42,19 @@ export default function FractionFactory() {
   useEffect(() => {
     if (correct && !celebrated) {
       setCelebrated(true);
-      setTimeout(() => {
-        const next = level + 1;
-        setLevel(next);
-        setRound(currentRound => generateRound(next, currentRound));
-        setSlices(0);
-        setSelected(new Set());
-        setPhase("slice");
-        setCelebrated(false);
-      }, 1800);
+      if (onComplete) {
+        setTimeout(() => onComplete({ correct: true, answer: `${round.numer}/${round.denom}` }), 1200);
+      } else {
+        setTimeout(() => {
+          const next = level + 1;
+          setLevel(next);
+          setRound(currentRound => generateRound(next, currentRound));
+          setSlices(0);
+          setSelected(new Set());
+          setPhase("slice");
+          setCelebrated(false);
+        }, 1800);
+      }
     }
   }, [correct, celebrated, level]);
 

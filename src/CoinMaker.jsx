@@ -16,9 +16,9 @@ function generateTarget(level) {
   return rand(30, 150);
 }
 
-export default function CoinMaker() {
+export default function CoinMaker({ params, onComplete }) {
   const [level, setLevel] = useState(1);
-  const [target, setTarget] = useState(() => generateTarget(1));
+  const [target, setTarget] = useState(() => params?.target ?? generateTarget(1));
   const [hundreds, setHundreds] = useState(0);
   const [tens, setTens] = useState(0);
   const [ones, setOnes] = useState(0);
@@ -56,15 +56,19 @@ export default function CoinMaker() {
   useEffect(() => {
     if (balanced && !celebrated && total > 0) {
       setCelebrated(true);
-      setTimeout(() => {
-        const next = level + 1;
-        setLevel(next);
-        setTarget(generateTarget(next));
-        setHundreds(0);
-        setTens(0);
-        setOnes(0);
-        setCelebrated(false);
-      }, 1800);
+      if (onComplete) {
+        setTimeout(() => onComplete({ correct: true, answer: target }), 1200);
+      } else {
+        setTimeout(() => {
+          const next = level + 1;
+          setLevel(next);
+          setTarget(generateTarget(next));
+          setHundreds(0);
+          setTens(0);
+          setOnes(0);
+          setCelebrated(false);
+        }, 1800);
+      }
     }
   }, [balanced, celebrated, total, level]);
 

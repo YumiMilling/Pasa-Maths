@@ -18,9 +18,14 @@ function generateRound(level) {
   return { total, plates };
 }
 
-export default function FairShare() {
+export default function FairShare({ params, onComplete }) {
   const [level, setLevel] = useState(1);
-  const [round, setRound] = useState(() => generateRound(1));
+  const [round, setRound] = useState(() => {
+    if (params) {
+      return { total: params.total ?? 10, plates: params.plates ?? 2 };
+    }
+    return generateRound(1);
+  });
   const [distribution, setDistribution] = useState([]); // array of plate counts
   const [remaining, setRemaining] = useState(0);
   const [celebrated, setCelebrated] = useState(false);
@@ -37,12 +42,16 @@ export default function FairShare() {
   useEffect(() => {
     if (allCorrect && !celebrated && distribution.length > 0 && distribution[0] > 0) {
       setCelebrated(true);
-      setTimeout(() => {
-        const next = level + 1;
-        setLevel(next);
-        setRound(generateRound(next));
-        setCelebrated(false);
-      }, 2000);
+      if (onComplete) {
+        setTimeout(() => onComplete({ correct: true, answer: perPlate }), 1200);
+      } else {
+        setTimeout(() => {
+          const next = level + 1;
+          setLevel(next);
+          setRound(generateRound(next));
+          setCelebrated(false);
+        }, 2000);
+      }
     }
   }, [allCorrect, celebrated, distribution, level]);
 

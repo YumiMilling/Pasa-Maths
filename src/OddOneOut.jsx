@@ -94,7 +94,7 @@ function ShapeIcon({ shape, color, size, filled }) {
   return null;
 }
 
-export default function OddOneOut() {
+export default function OddOneOut({ params, onComplete }) {
   const [round, setRound] = useState(() => generateRound());
   const [selected, setSelected] = useState(null);
   const [feedback, setFeedback] = useState(null);
@@ -104,11 +104,15 @@ export default function OddOneOut() {
     setSelected(i);
     const correct = i === round.oddIdx;
     setFeedback(correct ? "correct" : "wrong");
-    setTimeout(() => {
-      if (correct) setRound(generateRound());
-      setSelected(null);
-      setFeedback(null);
-    }, correct ? 1200 : 800);
+    if (onComplete) {
+      setTimeout(() => onComplete({ correct, answer: i }), correct ? 1200 : 800);
+    } else {
+      setTimeout(() => {
+        if (correct) setRound(generateRound());
+        setSelected(null);
+        setFeedback(null);
+      }, correct ? 1200 : 800);
+    }
   };
 
   return (
