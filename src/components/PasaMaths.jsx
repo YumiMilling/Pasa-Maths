@@ -123,6 +123,8 @@ export default function PasaMaths({ onExit }) {
     setScreen("session");
   }, []);
 
+  const [toast, setToast] = useState(null); // { text, color, icon }
+
   const handleActivityComplete = useCallback(({ correct }) => {
     const item = session[activityIndex];
     if (!item) return;
@@ -137,12 +139,27 @@ export default function PasaMaths({ onExit }) {
       strandsWorked: [...new Set([...prev.strandsWorked, STRAND_MAP[item.skill.strandId || ""]?.name || item.skill.name])],
     }));
 
-    const nextIdx = activityIndex + 1;
-    if (nextIdx >= session.length) {
-      setScreen("complete");
-    } else {
-      setActivityIndex(nextIdx);
+    // Show progress toast
+    if (result.justMastered) {
+      setToast({ text: `\u2B50 "${item.skill.name}" mastered!`, color: "#22C55E", icon: "\u{1F3C6}" });
+    } else if (correct && result.streak >= 2) {
+      setToast({ text: `${item.skill.name} — ${result.streak}/3 to master`, color: "#3B82F6", icon: "\u{1F525}" });
+    } else if (correct && result.streak === 1) {
+      setToast({ text: `${item.skill.name} — 1/3 to master`, color: "#6B7280", icon: "\u2705" });
+    } else if (!correct) {
+      setToast({ text: `Keep going — you'll get it`, color: "#9CA3AF", icon: "\u{1F4AA}" });
     }
+
+    // Advance after brief pause
+    setTimeout(() => {
+      setToast(null);
+      const nextIdx = activityIndex + 1;
+      if (nextIdx >= session.length) {
+        setScreen("complete");
+      } else {
+        setActivityIndex(nextIdx);
+      }
+    }, result.justMastered ? 1800 : 1000);
   }, [activityIndex, session]);
 
   // ── Render ──
@@ -240,13 +257,28 @@ export default function PasaMaths({ onExit }) {
             }} />
           ))}
         </div>
+        {/* Toast — shows progress between activities */}
+        {toast && (
+          <div style={{
+            padding: "8px 16px", textAlign: "center",
+            background: `${toast.color}15`, borderBottom: `1px solid ${toast.color}30`,
+            animation: "fadeIn 0.3s ease",
+          }}>
+            <span style={{ fontSize: 14, fontWeight: 700, color: toast.color }}>
+              {toast.icon} {toast.text}
+            </span>
+          </div>
+        )}
         {/* Activity */}
         <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 20px", maxWidth: 480, margin: "0 auto", width: "100%" }}>
-          {Component
+          {!toast && Component
             ? <Component key={`${item.skill.id}-${activityIndex}`} onComplete={handleActivityComplete} />
-            : <div>Unknown activity: {item.activity}</div>
+            : !toast ? <div>Unknown activity: {item.activity}</div> : null
           }
         </div>
+        <style>{`
+          @keyframes fadeIn { 0% { opacity: 0; transform: translateY(-8px); } 100% { opacity: 1; transform: translateY(0); } }
+        `}</style>
       </div>
     );
   }
