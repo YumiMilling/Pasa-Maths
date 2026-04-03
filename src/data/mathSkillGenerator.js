@@ -21,11 +21,25 @@ function shuffle(arr) {
 /**
  * Generate activity params for a given skill.
  * Returns { activity, props } where props are passed to the component.
+ *
+ * Supports both formats:
+ *   - Old: { activity: "tensFrame", params: { max: 10 } }
+ *   - New: { activities: [{ activity: "tensFrame", params: { max: 10 } }, ...] }
+ * New format randomly picks one activity from the array for variety.
  */
 export function generateActivity(skill) {
-  const p = skill.params || {};
+  // New multi-activity format: pick one randomly
+  let activityType, p;
+  if (skill.activities && skill.activities.length > 0) {
+    const picked = skill.activities[Math.floor(Math.random() * skill.activities.length)];
+    activityType = picked.activity;
+    p = picked.params || {};
+  } else {
+    activityType = skill.activity;
+    p = skill.params || {};
+  }
 
-  switch (skill.activity) {
+  switch (activityType) {
     case "tensFrame":
       return genTensFrame(p);
     case "numberLine":

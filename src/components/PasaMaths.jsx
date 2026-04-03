@@ -73,8 +73,6 @@ export default function PasaMaths({ onExit }) {
   const [placementIdx, setPlacementIdx] = useState(0);
   const [placementResults, setPlacementResults] = useState([]);
 
-  if (!loaded) return null;
-
   // ── Placement ──
 
   const handlePlacementAnswer = useCallback(({ correct }) => {
@@ -149,6 +147,8 @@ export default function PasaMaths({ onExit }) {
 
   // ── Render ──
 
+  if (!loaded) return null;
+
   if (screen === "placement") {
     const q = placementQs[placementIdx];
     const Component = ACTIVITY_COMPONENTS[q.activity];
@@ -178,7 +178,7 @@ export default function PasaMaths({ onExit }) {
         </div>
         {/* Activity */}
         <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 20px", maxWidth: 480, margin: "0 auto", width: "100%" }}>
-          {Component ? <Component onComplete={handlePlacementAnswer} /> : <div>Unknown activity: {q.activity}</div>}
+          {Component ? <Component key={`placement-${placementIdx}`} onComplete={handlePlacementAnswer} /> : <div>Unknown activity: {q.activity}</div>}
         </div>
       </div>
     );

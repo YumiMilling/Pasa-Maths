@@ -23,14 +23,34 @@ export const STRANDS = [
     emoji: "\u{1F7E2}",
     skills: [
       // Gr 1 — Counting & recognition
-      { id: "n01", name: "Count to 5", activity: "tensFrame", params: { max: 5 } },
-      { id: "n02", name: "Count to 10", activity: "tensFrame", params: { max: 10 } },
-      { id: "n03", name: "Place numbers to 5", activity: "numberLine", params: { max: 5 } },
-      { id: "n04", name: "Place numbers to 10", activity: "numberLine", params: { max: 10 } },
-      { id: "n05", name: "Compare: more or less (to 10)", activity: "numberLine", params: { max: 10, mode: "compare" } },
-      { id: "n06", name: "Order numbers to 10", activity: "numberLine", params: { max: 10, mode: "order" } },
-      { id: "n07", name: "Count to 20", activity: "tensFrame", params: { max: 20 } },
-      { id: "n08", name: "Place numbers to 20", activity: "numberLine", params: { max: 20 } },
+      { id: "n01", name: "Count to 5", activities: [
+        { activity: "tensFrame", params: { max: 5 } },
+      ]},
+      { id: "n02", name: "Count to 10", activities: [
+        { activity: "tensFrame", params: { max: 10 } },
+        { activity: "numberLine", params: { max: 10 } },
+      ]},
+      { id: "n03", name: "Place numbers to 5", activities: [
+        { activity: "numberLine", params: { max: 5 } },
+      ]},
+      { id: "n04", name: "Place numbers to 10", activities: [
+        { activity: "numberLine", params: { max: 10 } },
+        { activity: "tensFrame", params: { max: 10 } },
+      ]},
+      { id: "n05", name: "Compare: more or less (to 10)", activities: [
+        { activity: "numberLine", params: { max: 10, mode: "compare" } },
+        { activity: "measureUp", params: { maxUnits: 10, mode: "compare" } },
+      ]},
+      { id: "n06", name: "Order numbers to 10", activities: [
+        { activity: "numberLine", params: { max: 10, mode: "order" } },
+      ]},
+      { id: "n07", name: "Count to 20", activities: [
+        { activity: "tensFrame", params: { max: 20 } },
+        { activity: "numberLine", params: { max: 20 } },
+      ]},
+      { id: "n08", name: "Place numbers to 20", activities: [
+        { activity: "numberLine", params: { max: 20 } },
+      ]},
 
       // Gr 2 — Place value
       { id: "n09", name: "Tens and ones (to 50)", activity: "coinMaker", params: { max: 50 } },
@@ -63,20 +83,50 @@ export const STRANDS = [
     emoji: "\u2796",
     skills: [
       // Gr 1 — Addition & subtraction basics
-      { id: "o01", name: "Add within 5", activity: "balanceScale", params: { max: 5, op: "add" } },
-      { id: "o02", name: "Add within 10", activity: "balanceScale", params: { max: 10, op: "add" } },
-      { id: "o03", name: "Subtract within 5", activity: "balanceScale", params: { max: 5, op: "subtract" } },
-      { id: "o04", name: "Subtract within 10", activity: "balanceScale", params: { max: 10, op: "subtract" } },
-      { id: "o05", name: "Number bonds to 5", activity: "balanceScale", params: { max: 5, op: "bonds" } },
-      { id: "o06", name: "Number bonds to 10", activity: "balanceScale", params: { max: 10, op: "bonds" } },
-      { id: "o07", name: "Add within 20", activity: "balanceScale", params: { max: 20, op: "add" } },
-      { id: "o08", name: "Subtract within 20", activity: "balanceScale", params: { max: 20, op: "subtract" } },
+      { id: "o01", name: "Add within 5", activities: [
+        { activity: "balanceScale", params: { max: 5, op: "add" } },
+        { activity: "tensFrame", params: { max: 5 } },
+      ]},
+      { id: "o02", name: "Add within 10", activities: [
+        { activity: "balanceScale", params: { max: 10, op: "add" } },
+        { activity: "skipCount", params: { hop: 1, maxTarget: 10 } },
+      ]},
+      { id: "o03", name: "Subtract within 5", activities: [
+        { activity: "balanceScale", params: { max: 5, op: "subtract" } },
+      ]},
+      { id: "o04", name: "Subtract within 10", activities: [
+        { activity: "balanceScale", params: { max: 10, op: "subtract" } },
+      ]},
+      { id: "o05", name: "Number bonds to 5", activities: [
+        { activity: "balanceScale", params: { max: 5, op: "bonds" } },
+        { activity: "tensFrame", params: { max: 5 } },
+      ]},
+      { id: "o06", name: "Number bonds to 10", activities: [
+        { activity: "balanceScale", params: { max: 10, op: "bonds" } },
+        { activity: "tensFrame", params: { max: 10 } },
+      ]},
+      { id: "o07", name: "Add within 20", activities: [
+        { activity: "balanceScale", params: { max: 20, op: "add" } },
+        { activity: "coinMaker", params: { max: 20 } },
+      ]},
+      { id: "o08", name: "Subtract within 20", activities: [
+        { activity: "balanceScale", params: { max: 20, op: "subtract" } },
+      ]},
 
       // Gr 2 — Two-digit, intro multiplication
-      { id: "o09", name: "Add within 100 (no carry)", activity: "balanceScale", params: { max: 100, op: "add", noCarry: true } },
-      { id: "o10", name: "Subtract within 100 (no borrow)", activity: "balanceScale", params: { max: 100, op: "subtract", noBorrow: true } },
-      { id: "o11", name: "Add within 100 (with carry)", activity: "balanceScale", params: { max: 100, op: "add" } },
-      { id: "o12", name: "Subtract within 100 (with borrow)", activity: "balanceScale", params: { max: 100, op: "subtract" } },
+      { id: "o09", name: "Add within 100 (no carry)", activities: [
+        { activity: "balanceScale", params: { max: 100, op: "add", noCarry: true } },
+        { activity: "coinMaker", params: { max: 100 } },
+      ]},
+      { id: "o10", name: "Subtract within 100 (no borrow)", activities: [
+        { activity: "balanceScale", params: { max: 100, op: "subtract", noBorrow: true } },
+      ]},
+      { id: "o11", name: "Add within 100 (with carry)", activities: [
+        { activity: "balanceScale", params: { max: 100, op: "add" } },
+      ]},
+      { id: "o12", name: "Subtract within 100 (with borrow)", activities: [
+        { activity: "balanceScale", params: { max: 100, op: "subtract" } },
+      ]},
       { id: "o13", name: "Skip count by 2", activity: "skipCount", params: { hop: 2, maxTarget: 20 } },
       { id: "o14", name: "Skip count by 5", activity: "skipCount", params: { hop: 5, maxTarget: 50 } },
       { id: "o15", name: "Skip count by 10", activity: "skipCount", params: { hop: 10, maxTarget: 100 } },

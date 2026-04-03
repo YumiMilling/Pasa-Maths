@@ -58,7 +58,9 @@ export default function DevSkillMap() {
                     fontSize: 10, fontWeight: 600, color: "#9CA3AF",
                     padding: "2px 6px", borderRadius: 4, background: "#F3F4F6",
                   }}>
-                    {skill.activity}
+                    {skill.activities
+                      ? skill.activities.map(a => a.activity).join(" / ")
+                      : skill.activity}
                   </span>
                 </div>
               );
