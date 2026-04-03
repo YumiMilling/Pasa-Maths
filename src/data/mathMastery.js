@@ -1,15 +1,16 @@
 /**
  * Mastery Model — tracks per-skill progress.
  *
- * Each skill has:
- *   - streak: consecutive correct (3 = mastered)
- *   - attempts: last 10 results
- *   - masteredAt: timestamp when mastered (null if not)
- *   - level: current skill index per strand
+ * localStorage for fast reads, Supabase for persistence.
+ * Syncs to Supabase after each session (debounced).
  */
 
+import { supabase } from "./supabase";
+
 const STORAGE_KEY = "pasa_math_mastery";
-const MASTERY_STREAK = 3;  // correct in a row to master
+const MASTERY_STREAK = 3;
+
+let syncTimer = null;
 
 function load() {
   try {
@@ -19,6 +20,46 @@ function load() {
 
 function save(state) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  // Debounced Supabase sync (2 seconds after last change)
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => syncToSupabase(state), 2000);
+}
+
+async function syncToSupabase(state) {
+  if (!supabase) return;
+  try {
+    const learner = JSON.parse(localStorage.getItem("pasa_current_learner") || "null");
+    if (!learner?.name || !learner?.pin || !learner?.avatar) return;
+    await supabase.rpc("learner_save_math", {
+      p_name: learner.name,
+      p_pin: learner.pin,
+      p_avatar: learner.avatar,
+      p_math_mastery: state,
+    });
+  } catch (e) {
+    console.warn("Math mastery sync failed:", e.message);
+  }
+}
+
+/**
+ * Load mastery from Supabase (on login) and merge with local.
+ * Supabase wins for skills it has data for; local fills gaps.
+ */
+export function loadFromSupabase(mathMastery) {
+  if (!mathMastery || typeof mathMastery !== "object") return;
+  const local = load();
+  // Merge: for each skill, keep whichever has more attempts or is mastered
+  for (const [skillId, remote] of Object.entries(mathMastery)) {
+    const loc = local[skillId];
+    if (!loc) {
+      local[skillId] = remote;
+    } else if (remote.masteredAt && !loc.masteredAt) {
+      local[skillId] = remote;
+    } else if ((remote.attempts?.length || 0) > (loc.attempts?.length || 0)) {
+      local[skillId] = remote;
+    }
+  }
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(local));
 }
 
 export function getMastery() {

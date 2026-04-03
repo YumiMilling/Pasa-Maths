@@ -4,10 +4,10 @@
  * State machine: map → session (activities) → complete → map
  * First visit: placement → map
  */
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { STRANDS, STRAND_MAP } from "../data/mathStrands";
 import { planSession } from "../data/mathSessionPlanner";
-import { recordResult, getMastery, setPlacement } from "../data/mathMastery";
+import { recordResult, getMastery, setPlacement, loadFromSupabase } from "../data/mathMastery";
 import { generatePlacement, processPlacement } from "../data/mathPlacement";
 import { generateActivity } from "../data/mathSkillGenerator";
 import MathStrandMap from "./MathStrandMap";
@@ -49,6 +49,19 @@ const ACTIVITY_COMPONENTS = {
 };
 
 export default function PasaMaths({ onExit }) {
+  const [loaded, setLoaded] = useState(false);
+
+  // On mount: load math mastery from Supabase learner profile
+  useEffect(() => {
+    try {
+      const learner = JSON.parse(localStorage.getItem("pasa_current_learner") || "null");
+      if (learner?.math_mastery) {
+        loadFromSupabase(learner.math_mastery);
+      }
+    } catch {}
+    setLoaded(true);
+  }, []);
+
   const hasPlaced = Object.keys(getMastery()).length > 0;
   const [screen, setScreen] = useState(hasPlaced ? "map" : "placement");
   const [session, setSession] = useState([]);
@@ -59,6 +72,8 @@ export default function PasaMaths({ onExit }) {
   const [placementQs, setPlacementQs] = useState(() => generatePlacement());
   const [placementIdx, setPlacementIdx] = useState(0);
   const [placementResults, setPlacementResults] = useState([]);
+
+  if (!loaded) return null;
 
   // ── Placement ──
 

@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/YumiMilling/Pasa-Maths#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.101.1",
     "@vitejs/plugin-react": "^6.0.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
